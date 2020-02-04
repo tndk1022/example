@@ -1,0 +1,24 @@
+{
+  "name": "example",
+  "version": "1.0.0",
+  "main": "array.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "request": "^2.88.0",
+    "xml2js": "^0.4.23"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tndk1022/example.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tndk1022/example/issues"
+  },
+  "homepage": "https://github.com/tndk1022/example#readme",
+  "description": ""
+}
