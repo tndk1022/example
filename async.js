@@ -18,6 +18,7 @@ console.log("마지막 기능");
 /**
  * 파일 읽어와서 내용 출력
  */
+//동기식으로 출력한 방식 - 다 끝나야 다음 넘어간다!
 var result = fs.readFileSync('test.txt', 'utf-8');
 
 console.log(result);
