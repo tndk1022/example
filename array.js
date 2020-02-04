@@ -1,3 +1,7 @@
+
+/**
+ * 펑션 선언
+ */
 var cars = [];
 var car01 = {
     name: "sonata",
@@ -23,4 +27,12 @@ var car02 = {
 cars[0] = car01;
 cars[1] = car02;
 
-console.log(cars[1].name);
+/**
+ * 반복문 예시 20200204 ksj
+ */
+for(var i=0; i<cars.length; i++) {
+    var element = cars[i];
+    if(element.name == "BMW") {
+        console.log(i);
+    }
+}
