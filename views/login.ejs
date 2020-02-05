@@ -169,10 +169,7 @@
                         userPassword : userPassword
                     },
                     success:function(data){
-                        console.log(data);
-                        if(data == 1){
-                            alert("로그인 성공")
-                        }
+                        sessionStorage.setItem('jwtToken', data);
                     }
                 });
 

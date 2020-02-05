@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 var request = require('request');
 var jwt = require('jsonwebtoken');
-var auth = require('./lib/auth.js')
+var auth = require('./lib/auth')
 
 var tokenKey = "fintech202020!#abcd"
 
@@ -128,5 +128,9 @@ app.post("/signup", function(req, res) {
         }
     });
 });
+
+app.get('/authTest',auth, function(req, res){
+    res.json("메인 컨텐츠")
+  })
 
 app.listen(3000);
