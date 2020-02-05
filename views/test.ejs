@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+    <body>
+        <h1>
+            ejs 페이지
+        </h1>
+        <table>
+            <tr>
+                <td>id: </td>
+                <td><input type="text" id = "id" value="tndk1022"></td>
+            </tr>
+            <tr>
+                <td>email: </td>
+                <td><input type="text" id = "email" value="tndk1022@naver.com"></td>
+            </tr>
+            <tr>
+                <td>pw: </td>
+                <td><input type="text" id = "password" value="1234"></td>
+            </tr>
+        </table>
+        <input type="button" id="btnJoin" value="회원가입" >
+    </body>
+</html>
+<script
+    src="https://code.jquery.com/jquery-2.2.4.js"
+    integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI="
+    crossorigin="anonymous"></script>
+<script> 
+    $("#btnJoin").click(function() {
+        var userId = $("#id").val();
+        var userEmail = $("#email").val();
+        var userPassword = $("#password").val();
+        $.ajax({
+                url:'http://localhost:3000/join',
+                type : 'POST',
+                data : {
+                    userId : userId,
+                    userEmail : userEmail, 
+                    userPassword : userPassword
+                  },
+                    success:function(data){
+                        console.log(data);
+                  }
+            })
+
+    });
+</script>
