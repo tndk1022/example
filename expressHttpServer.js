@@ -3,6 +3,7 @@ const app = express();
 var request = require('request');
 var jwt = require('jsonwebtoken');
 var auth = require('./lib/auth')
+var host = "https://testapi.openbanking.or.kr";
 
 var tokenKey = "fintech202020!#abcd"
 
@@ -46,6 +47,9 @@ app.get("/designTest", function(req, res) {
 app.get("/login", function(req, res) {
     res.render('login');
 });
+app.get("/main", function(req, res) {
+    res.render('main');
+});
 
 app.post("/login", function(req, res) {
     var userEmail = req.body.userEmail;
@@ -72,8 +76,8 @@ app.post("/login", function(req, res) {
                           subject : 'user.login.info'
                       },
                       function(err, token){
-                          console.log('로그인 성공', token)
-                          res.json(token)
+                          console.log('로그인 성공', token);
+                          res.json(token);
                       }
                     )
                 } else {
@@ -91,7 +95,7 @@ app.get("/authResult", function(req, res) {
     var authCode = req.query.code;
     var option = {
         method : "POST",
-        url : "https://testapi.openbanking.or.kr/oauth/2.0/token",
+        url : host + "/oauth/2.0/token",
         headers : {
             "Content-Type" : "application/x-www-form-urlencoded; charset=UTF-8"
         },
@@ -105,7 +109,6 @@ app.get("/authResult", function(req, res) {
     }
 
     request(option, function(error, response, body) {
-        //res.send(body);
         var parseData = JSON.parse(body);
         console.log(parseData);
         res.render("resultChild", {data : parseData});
@@ -130,7 +133,128 @@ app.post("/signup", function(req, res) {
 });
 
 app.get('/authTest',auth, function(req, res){
+    console.log(req.decoded);
     res.json("메인 컨텐츠")
-  })
+});
+
+app.post("/list",auth,function(req, res) {
+    var user = req.decoded;
+    var query = "SELECT * FROM user WHERE id = ?";
+    var option = "";
+    
+    connecction.query(query,[user.userId], function(error, results, fields) {
+        if(error) throw error;
+        else {
+            var authToken = "Bearer " + results[0].accesstoken;
+            var userSeqNo =  results[0].userseqno;
+
+            option = {
+                method : "GET",
+                url : host + "/v2.0/user/me",
+                headers : {
+                    "Authorization" : authToken
+                },
+                qs : {user_seq_no : userSeqNo}
+            }
+        
+            request(option, function(error, response, body) {
+                var parseData = JSON.parse(body);
+                res.json(parseData);
+            });
+        }
+    });
+});
+
+app.get("/balance", function(req, res) {
+    res.render('balance');
+});
+app.post("/balance", auth, function(req, res) {
+    var finUseNo = "";
+    var authToken = "";
+    var userSeqNo =  "";
+    var countNum = Math.floor(Math.random() * 1000000000) + 1;
+    var transId = "T991602030U" + countNum;
+    var user = req.decoded;
+    var query = "SELECT * FROM user WHERE id = ?";
+
+    connecction.query(query,[user.userId], function(error, results, fields) {
+        if(error) throw error;
+        else {
+
+            authToken = "Bearer " + results[0].accesstoken;
+            userSeqNo =  results[0].userseqno;
+            finUseNo = req.body.fin_use_num;
+
+            option = {
+                method : "GET",
+                url : host + "/v2.0/account/balance/fin_num",
+                headers : {
+                    "Authorization" : authToken
+                },
+                qs : {
+                    bank_tran_id : transId
+                    , fintech_use_num : finUseNo
+                    , tran_dtime : "20200206113100"
+                }
+            }
+        
+            request(option, function(error, response, body) {
+                var parseData = JSON.parse(body);
+                console.log(parseData);
+                res.json(parseData);
+            });
+        }
+    });
+});
+
+app.get("/transaction", function(req, res) {
+    res.render('transaction');
+});
+app.post("/transaction", auth, function(req, res) {
+    var finUseNo = "";
+    var authToken = "";
+    var countNum = Math.floor(Math.random() * 1000000000) + 1;
+    var transId = "T991602030U" + countNum;
+    var user = req.decoded;
+    var query = "SELECT * FROM user WHERE id = ?";
+
+    connecction.query(query,[user.userId], function(error, results, fields) {
+        if(error) throw error;
+        else {
+
+            authToken = "Bearer " + results[0].accesstoken;
+            finUseNo = req.body.fin_use_num;
+
+            option = {
+                method : "GET",
+                url : host + "/v2.0/account/transaction_list/fin_num",
+                headers : {
+                    "Authorization" : authToken
+                },
+                qs : {
+                    bank_tran_id : transId
+                    , fintech_use_num : finUseNo
+                    , inquiry_type : "A"
+                    , inquiry_base : "D"
+                    , from_date : "20200101"
+                    , to_date : "20200206"
+                    , sort_order : "D"
+                    , tran_dtime : "20200206113100"
+                }
+            }
+        
+            request(option, function(error, response, body) {
+                var parseData = JSON.parse(body);
+                console.log(parseData);
+                res.json(parseData);
+            });
+        }
+    });
+});
+
+app.get("/qrcode", function(req, res) {
+    res.render('qrcode');
+});
+
 
 app.listen(3000);
