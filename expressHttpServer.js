@@ -376,7 +376,7 @@ app.get("/oob", function(req, res) {
             scope : "oob",
             grant_type : "client_credentials"
         }
-    }
+    };
  
     request(option, function(error, response, body) {
         var parseData = JSON.parse(body);
