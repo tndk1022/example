@@ -182,7 +182,7 @@
     <script> 
         $("#btnCert").click(function() {
             var win = window.open("about:blank");
-            win.location = "https://testapi.openbanking.or.kr/oauth/2.0/authorize?response_type=code&client_id=Vn0D9mniM8Er8WMR3Zz4QNJ3euO45IU10ufDYp6S&redirect_uri=http://localhost:3000/authResult&scope=login%20inquiry&state=12341234123412341234123412341234&auth_type=0";
+            win.location = "https://testapi.openbanking.or.kr/oauth/2.0/authorize_account?response_type=code&client_id=Vn0D9mniM8Er8WMR3Zz4QNJ3euO45IU10ufDYp6S&redirect_uri=http://localhost:3000/authResult&scope=login%20inquiry%20transfer&state=12341234123412341234123412341234&auth_type=0";
         });
 
         $("#btnSignUp").click(function() {
