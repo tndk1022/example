@@ -377,12 +377,12 @@ app.get("/oob", function(req, res) {
             grant_type : "client_credentials"
         }
     }
-
+ 
     request(option, function(error, response, body) {
         var parseData = JSON.parse(body);
         console.log(parseData);
         res.render("resultChild", {data : parseData});
-    });
+    })
 });
 
 
